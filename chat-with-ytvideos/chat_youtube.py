@@ -1,6 +1,6 @@
 import tempfile
 import streamlit as st
-from embedchain import App
+from embedchain import App # wraps OpenAI + a vector database so we can “chat” over text we feed in.
 from youtube_transcript_api import YouTubeTranscriptApi
 from typing import Tuple
 from datetime import datetime
@@ -20,7 +20,8 @@ st.sidebar.markdown("""
 # --- API Key Input ---
 openai_access_token = st.sidebar.text_input("OpenAI API Key", type="password")
 
-# --- Helper Functions ---
+# Helper building our chatbot
+# db_path: folder where Chroma stores its vector database.
 def embedchain_bot(db_path: str, api_key: str) -> App:
     return App.from_config(
         config={
@@ -43,7 +44,7 @@ def fetch_video_data(video_url: str) -> Tuple[str, str]:
     try:
         video_id = extract_video_id(video_url)
         transcript = YouTubeTranscriptApi.get_transcript(video_id)
-        transcript_text = " ".join([entry["text"] for entry in transcript])
+        transcript_text = " ".join([entry["text"] for entry in transcript]) # Joins all lines of the transcript into one giant string.
         return "Unknown", transcript_text  # Title is set to "Unknown" since we're not fetching it
     except Exception as e:
         return "Unknown", "No transcript available for this video."
@@ -54,7 +55,7 @@ st.caption("Chat with any YouTube video using OpenAI's GPT-4!")
 
 if openai_access_token:
     db_path = tempfile.mkdtemp()
-    app = embedchain_bot(db_path, openai_access_token)
+    app = embedchain_bot(db_path, openai_access_token) # Builds our app (the embedchain chatbot) with your key and that folder.
 
     with st.container():
         st.subheader("Step 1: Enter YouTube Video URL")
@@ -65,7 +66,7 @@ if openai_access_token:
                 title, transcript = fetch_video_data(video_url)
                 if transcript != "No transcript available for this video.":
                     try:
-                        app.add(transcript, data_type="text", metadata={"title": title, "url": video_url})
+                        app.add(transcript, data_type="text", metadata={"title": title, "url": video_url}) # Add that text into our embedchain knowledge base.
                         st.success(f"Added video '{title}' to knowledge base!")
                     except Exception as e:
                         st.error(f"Error adding video: {e}")
@@ -84,6 +85,9 @@ if openai_access_token:
                 with st.spinner("Thinking..."):
                     try:
                         answer = app.chat(prompt)
+                        # app.chat converts your question into an embedding
+                        # Queries the vector database for relevant chunks
+                        # Runs GPT-4 over those questions + your question
                         st.session_state.chat_history.append({
                             "timestamp": datetime.now().strftime("%H:%M:%S"),
                             "question": prompt,
