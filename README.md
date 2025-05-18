@@ -5,6 +5,8 @@ Welcome to the **AI Playground** repository! This repository is a collection of 
 ## Projects
 
 - [Chat with YouTube Videos](https://github.com/yash9657/ai-playground/tree/main/chat-with-ytvideos): An app that lets you interact with YouTube video content using AI.
+- [Kahoot AI](https://github.com/yash9657/ai-playground/tree/main/kahoot-kimg): AI solution for you to become a god in the popular game Kahoot.
+- [Westside Detector](https://github.com/yash9657/ai-playground/tree/main/westside-opencv): Learn about hand gesture controls using open-cv and mediapipe by giving homage to the West coast.
 
 ## Contributing & Usage
 
