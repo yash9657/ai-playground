@@ -8,7 +8,7 @@ Welcome to the **AI Playground** repository! This repository is a collection of 
 - [Kahoot AI](https://github.com/yash9657/ai-playground/tree/main/kahoot-kimg): AI solution for you to become a god in the popular game Kahoot.
 - [Westside Detector](https://github.com/yash9657/ai-playground/tree/main/westside-opencv): Learn about hand gesture controls using open-cv and mediapipe by giving homage to the West coast.
 - [Browser + LLM](https://github.com/yash9657/ai-playground/tree/main/bring-your-own-browser): By integrating web search capabilities with an LLM, we'll enable the model to generate responses based on the latest information available online.
-- [Arxiv Research Chatbot](https://github.com/yash9657/ai-playground/tree/main/arxiv-assistant): A conversational research assistant for searching and summarizing arXiv papers. The assistant leverages Anthropic's Claude LLM to interpret user queries and call custom tools for paper search and information extraction.
+- [Arxiv Research Chatbot](https://github.com/yash9657/ai-playground/tree/main/arxiv-assistant): A modular research assistant that lets you search for and extract information about arXiv research papers using natural language, powered by FastMCP and Anthropic's Claude LLM.
 
 ## Contributing & Usage
 
