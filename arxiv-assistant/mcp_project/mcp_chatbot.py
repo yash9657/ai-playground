@@ -1,10 +1,12 @@
 from dotenv import load_dotenv
 from anthropic import Anthropic
+# ClientSession - wraps the JSON-RPC session
+# StdioServerParameters - explains how to connect to the server
 from mcp import ClientSession, StdioServerParameters, types
-from mcp.client.stdio import stdio_client
+from mcp.client.stdio import stdio_client # is an async context manager that spawns the subprocess and yields reader/writer streams.
 from typing import List
 import asyncio
-import nest_asyncio
+import nest_asyncio # allows nested event loops
 
 nest_asyncio.apply()
 
@@ -14,9 +16,9 @@ class MCP_ChatBot:
 
     def __init__(self):
         # Initialize session and client objects
-        self.session: ClientSession = None
-        self.anthropic = Anthropic(api_key='YOUR_API_KEY')
-        self.available_tools: List[dict] = []
+        self.session: ClientSession = None # will later hold the MCP session over stdio
+        self.anthropic = Anthropic(api_key='YOUR_API_KEY') # claude client
+        self.available_tools: List[dict] = [] # will be populated later with tool metadata (so "claude can see which tools exist")
 
     async def process_query(self, query):
         messages = [{'role':'user', 'content':query}]
@@ -91,7 +93,9 @@ class MCP_ChatBot:
             args=["run", "research_server.py"],  # Optional command line arguments
             env=None,  # Optional environment variables
         )
+        # stdio_client launches 'uv run research_server.py' and gives us async streams.
         async with stdio_client(server_params) as (read, write):
+            # ClientSession(read, write) wraps those streams into an MCP session.
             async with ClientSession(read, write) as session:
                 self.session = session
                 # Initialize the connection
