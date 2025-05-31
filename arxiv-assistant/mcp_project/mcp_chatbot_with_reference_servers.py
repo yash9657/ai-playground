@@ -14,7 +14,7 @@ load_dotenv()
 class MCP_ChatBot:
     def __init__(self):
         self.exit_stack = AsyncExitStack()
-        self.anthropic = Anthropic(api_key='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')
+        self.anthropic = Anthropic(api_key='YOUR_API_KEY')
         # Tools list required for Anthropic API
         self.available_tools = []
         # Prompts list for quick display 
